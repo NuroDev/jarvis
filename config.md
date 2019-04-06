@@ -8,9 +8,6 @@ TODO
 # 🗄 Influx - Database:
 TODO
 
-# 📈 Chronograf - Influx Visualization:
-TODO
-
 # 🐳 Cadvisor - Docker Resource Monitoring:
 TODO
 

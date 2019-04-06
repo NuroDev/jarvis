@@ -63,22 +63,6 @@ services:
     labels:
       - "traefik.frontend.rule=Host:database.${DOMAIN}"
 
-  # Chronograf (InfluxDB visualization tool)
-  chronograf:
-    image: chronograf:latest
-    container_name: chronograf
-    restart: always
-    ports:
-      - "8888:8888"
-    volumes:
-      - ${CONFIG_DIR}/chronograf:/var/lib/chronograf
-    environment:
-      - INFLUXDB_URL=http://influxdb:8086
-    depends_on:
-      - influxdb
-    labels:
-      - "traefik.frontend.rule=Host:chronograf.${DOMAIN}"
-
   # Docker resource monitoring
   cadvisor:
     image: google/cadvisor
@@ -122,7 +106,6 @@ services:
       - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
     depends_on:
       - influxdb
-      - chronograf
       - cadvisor
       - varken
     labels:

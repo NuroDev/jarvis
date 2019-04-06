@@ -40,7 +40,6 @@ docker-compose up -d
 | Traefik       | `proxy.ip_address`     |
 | Heimdall		| `manager.ip_address`   |
 | InfluxDB		| `database.ip_address`  |
-| Chronograf	| `chronograf.ip_address`|
 | Cadvisor		| `cadvisor.ip_address`  |
 | Grafana		| `monitoring.ip_address`|
 | Plex      	| `plex.ip_address/web`  |
