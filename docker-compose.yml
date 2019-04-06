@@ -1,0 +1,196 @@
+version: "3"
+
+services:
+  # Automatic container updating/restarting system
+  watchtower:
+    image: v2tec/watchtower:latest
+    container_name: watchtower
+    restart: always
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # Reverse Proxy
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    networks:
+      - default
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    expose:
+      - 8080
+    command: --api --docker
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "${CONFIG_DIR}/traefik/traefik.toml:/traefik.toml"
+      - "${CONFIG_DIR}/traefik/acme.json:/acme.json"
+    labels:
+      - "traefik.frontend.rule=Host:proxy.${DOMAIN}"
+      - "traefik.port=8080"
+
+  # Stack manager
+  heimdall:
+    image: linuxserver/heimdall:latest
+    container_name: heimdall
+    restart: always
+    ports:
+      - "81:80"
+      - "444:443"
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - TZ=Europe/London
+    volumes:
+      - ${CONFIG_DIR}/heimdall:/config
+    labels:
+      - "traefik.frontend.rule=Host:manager.${DOMAIN}"
+
+  # Influx Database
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: always
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=jarvis
+    volumes:
+      - ${CONFIG_DIR}/influxdb:/var/lib/influxdb
+    labels:
+      - "traefik.frontend.rule=Host:database.${DOMAIN}"
+
+  # Chronograf (InfluxDB visualization tool)
+  chronograf:
+    image: chronograf:latest
+    container_name: chronograf
+    restart: always
+    ports:
+      - "8888:8888"
+    volumes:
+      - ${CONFIG_DIR}/chronograf:/var/lib/chronograf
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+    depends_on:
+      - influxdb
+    labels:
+      - "traefik.frontend.rule=Host:chronograf.${DOMAIN}"
+
+  # Docker resource monitoring
+  cadvisor:
+    image: google/cadvisor
+    container_name: cadvisor
+    restart: always
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - "8181:8080"
+    labels:
+      - "traefik.frontend.rule=Host:cadvisor.${DOMAIN}"
+
+  # Varken (Plex data aggregator)
+  varken:
+    image: boerderij/varken:latest
+    container_name: varken
+    restart: always
+    volumes:
+      - ${CONFIG_DIR}/varken:/config
+    environment:
+      - PGID=${GID}
+      - PUID=${UID}
+      - TZ=Europe/London
+    depends_on:
+      - influxdb
+
+  # Grafana dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - ${CONFIG_DIR}/grafana:/var/lib/grafana
+      - ${CONFIG_DIR}/grafana/provisioning/:/etc/grafana/provisioning
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+    depends_on:
+      - influxdb
+      - chronograf
+      - cadvisor
+      - varken
+    labels:
+      - "traefik.frontend.rule=Host:monitoring.${DOMAIN}"
+
+  # TODO: Google Drive Fuse (Writable Google Drive mount)
+
+  # Plexdrive (Read-only Google Drive mount)
+  plexdrive:
+    image: wiserain/plexdrive:5.0.0-unionfs
+    container_name: plexdrive
+    restart: always
+    network_mode: bridge
+    volumes:
+      - ${CONFIG_DIR}/plexdrive:/config
+      - ${MEDIA_READ_DIR}:/data:shared
+    privileged: true
+    devices:
+      - /dev/fuse
+    cap_add:
+      - MKNOD
+      - SYS_ADMIN
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+
+  # Media streaming
+  plex:
+    image: linuxserver/plex:latest
+    container_name: plex
+    restart: always
+    networks:
+      - default
+    ports:
+      - 32400:32400
+      - 32400:32400/udp
+      - 32469:32469
+      - 32469:32469/udp
+      - 5353:5353/udp
+      - 1900:1900/udp
+    environment:
+      - VERSION=docker
+      - PUID=${UID}
+      - PGID=${GID}
+    volumes:
+      - ${CONFIG_DIR}/plex:/config
+      - ${TRANSCODE_DIR}:/transcode
+      - ${MEDIA_READ_DIR}/movies:/data/movies
+      - ${MEDIA_READ_DIR}/tvshows:/data/tvshows
+      - ${MEDIA_READ_DIR}/extras:/data/extras
+    # depends_on:
+      # - googledrive
+      # - plexdrive
+    labels:
+      - "traefik.frontend.rule=Host:plex.${DOMAIN}"
+      - "traefik.port=32400"
+
+  # Movies/TV requesting
+  ombi:
+    image: linuxserver/ombi:latest
+    container_name: ombi
+    restart: always
+    ports:
+      - "3579:3579"
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+    volumes:
+      - ${CONFIG_DIR}/ombi:/config
+    labels:
+      - "traefik.frontend.rule=Host:request.${DOMAIN}"
