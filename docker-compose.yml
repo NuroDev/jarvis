@@ -55,7 +55,7 @@ services:
         volumes:
             - '${CONFIG_DIR}/heimdall:/config'
         labels:
-            - 'traefik.frontend.rule=Host:manager.${DOMAIN}'
+            - 'traefik.frontend.rule=Host:${DOMAIN},manager.${DOMAIN}'
     influxdb:
         image: 'influxdb:latest'
         container_name: influxdb
@@ -150,7 +150,7 @@ services:
             - '${CONFIG_DIR}/traefik/acme.json:/acme.json'
         labels:
             - 'traefik.frontend.rule=Host:proxy.${DOMAIN}'
-            - traefik.port=8080
+            - 'traefik.port=8080'
     varken:
         image: 'boerderij/varken:latest'
         container_name: varken
