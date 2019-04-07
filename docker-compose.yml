@@ -114,23 +114,23 @@ services:
   # TODO: Google Drive Fuse (Writable Google Drive mount)
 
   # Plexdrive (Read-only Google Drive mount)
-  plexdrive:
-    image: wiserain/plexdrive:5.0.0-unionfs
-    container_name: plexdrive
-    restart: always
-    network_mode: bridge
-    volumes:
-      - ${CONFIG_DIR}/plexdrive:/config
-      - ${MEDIA_READ_DIR}:/data:shared
-    privileged: true
-    devices:
-      - /dev/fuse
-    cap_add:
-      - MKNOD
-      - SYS_ADMIN
-    environment:
-      - PUID=${UID}
-      - PGID=${GID}
+  # plexdrive:
+  #   image: wiserain/plexdrive:5.0.0-unionfs
+  #   container_name: plexdrive
+  #   restart: always
+  #   network_mode: bridge
+  #   volumes:
+  #     - ${CONFIG_DIR}/plexdrive:/config
+  #     - ${MEDIA_READ_DIR}:/data:shared
+  #   privileged: true
+  #   devices:
+  #     - /dev/fuse
+  #   cap_add:
+  #     - MKNOD
+  #     - SYS_ADMIN
+  #   environment:
+  #     - PUID=${UID}
+  #     - PGID=${GID}
 
   # Media streaming
   plex:
