@@ -1,22 +1,31 @@
 version: '3'
+
+networks:
+    jarvis:
+        external: false
+
 services:
     cadvisor:
         image: google/cadvisor
         container_name: cadvisor
         restart: always
+        networks:
+            - jarvis
+        ports:
+            - '9090:8080'
         volumes:
             - '/:/rootfs:ro'
             - '/var/run:/var/run:rw'
             - '/sys:/sys:ro'
             - '/var/lib/docker/:/var/lib/docker:ro'
-        ports:
-            - '9090:8080'
         labels:
             - 'traefik.frontend.rule=Host:cadvisor.${DOMAIN}'
     grafana:
         image: 'grafana/grafana:latest'
         container_name: grafana
         restart: always
+        networks:
+            - jarvis
         ports:
             - '3001:3000'
         volumes:
@@ -34,6 +43,8 @@ services:
         image: 'linuxserver/heimdall:latest'
         container_name: heimdall
         restart: always
+        networks:
+            - jarvis
         ports:
             - '81:80'
             - '444:443'
@@ -49,6 +60,8 @@ services:
         image: 'influxdb:latest'
         container_name: influxdb
         restart: always
+        networks:
+            - jarvis
         ports:
             - '8086:8086'
         environment:
@@ -61,6 +74,8 @@ services:
         image: 'linuxserver/ombi:latest'
         container_name: ombi
         restart: always
+        networks:
+            - jarvis
         ports:
             - '3579:3579'
         environment:
@@ -78,7 +93,7 @@ services:
         container_name: plex
         restart: always
         networks:
-            - default
+            - jarvis
         ports:
             - '32400:32400'
             - '32400:32400/udp'
@@ -103,6 +118,10 @@ services:
         image: 'linuxserver/tautulli:latest'
         container_name: tautulli
         restart: always
+        networks:
+            - jarvis
+        ports:
+            - '8181:8181'
         environment:
             - 'PUID=${UID}'
             - 'PGID=${GID}'
@@ -110,8 +129,6 @@ services:
         volumes:
             - '${CONFIG_DIR}/tautulli:/config'
             - '${CONFIG_DIR}/plex/Library/Application Support/Plex Media Server/Logs/:/logs'
-        ports:
-            - '8181:8181'
         labels:
             - 'traefik.frontend.rule=Host:tautulli.${DOMAIN}'
     traefik:
@@ -119,7 +136,7 @@ services:
         container_name: traefik
         restart: always
         networks:
-            - default
+            - jarvis
         ports:
             - '80:80'
             - '443:443'

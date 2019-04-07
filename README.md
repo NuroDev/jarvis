@@ -39,7 +39,7 @@ docker-compose up -d
 | ------------- |:----------------------:|
 | Traefik       | `proxy.ip_address`     |
 | Heimdall		| `manager.ip_address`   |
-| InfluxDB		| `db.ip_address`  |
+| InfluxDB		| `db.ip_address`        |
 | Cadvisor		| `cadvisor.ip_address`  |
 | Grafana		| `monitoring.ip_address`|
 | Plex      	| `plex.ip_address`      |
