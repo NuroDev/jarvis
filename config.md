@@ -2,32 +2,6 @@
     <h1>🔨 Configure:</h1>
 </div>
 
-# 🗄 Grafana:
-To set up Grafana, our monitoring dashboard, you will need to add InfluxDB as a data source and import the Varken dashboard. Follow the steps below to do this: 
-
-#### Add InfluxDB data source
-1) Open `monitoring.ip_address` and login with the username `admin` & password `admin`
-2) Set a new admin password
-3) Click the green "Add Data Source" button
-4) Click the "InfluxDB" button
-5) Set `URL` to `http://influxdb:8086`
-6) Set `Database` to `jarvis`
-7) Click "Save & Test" & check it succeeds saying "Data source is working"
-
-#### Importing the dashboard
-1) Click the 2nd item on the left sidebar (The icon that looks like a 2x2 grid)
-2) Click the green "New Dashboard" button
-3) Click the "New Dashboard" text in the top left
-4) Click the "Import Dashboard" button
-5) Open [github.com/NuroDev/jarvis/blob/master/dashboard.json](https://github.com/NuroDev/jarvis/blob/master/dashboard.json) and copy the JSON and paste it into the "Or Paste JSON" text field & click the blue "Load"
-6) Set `varken` to "InfluxDB" in the dropdown
-7) (Optional) Set library names
-8) (Optional) Set Ombi URL
-9) (Optional) Set Tautulli URL
-10) Click the green "Import" button
-
-And you're done. Grafana has all been set up and is now running 👍🏻
-
 # 🗄️ Google Drive Fuse:
 TODO
 
@@ -52,6 +26,9 @@ When that command has been run, open `localhost:8484/web` in your web browser an
 Once connected follow through the simple step-by-step guide. When you get to the libraries section, add a `Films` library and set the directory path to `/data/movies` and then add a `TV Shows` library and set the directory path to `/data/tvshows`.
 Once all of the setup is done you can exit your SSH tunnel and log in to [app.plex.tv](https://app.plex.tv/desktop) and you should then be able to see your Plex server available.
 
+# 📈 Tautulli:
+TODO
+
 # 📋 Ombi:
 Almost done. Go to `ombi.ip_address` to access Ombi. Once there, click on `Admin` in the top left. It will ask you to log in, but since this is you first time setting it up, click `Register` instead. Enter your email address and a new password (There is no email server installed with Ombi, it is purely for a username login).
 
@@ -60,3 +37,35 @@ Once the account is created, in the general tab, set the weekly user request lim
 Next up, go to the `Authentication` tab and enable `Enable user permissions` and `Enable user authentication` and then enter your Plex username and password below and click the `Get Token` button to generate a Plex authorization token. This will mean that friends you share your Plex with can log in with their Plex username.
 
 Lastly go to the `Users` tab. Click the `Refresh Friends List` button to fetch your Plex friends list. Here you can set the permissions.
+
+# 🐷 Varken:
+TODO
+
+# 🗄 Grafana:
+To set up Grafana, our monitoring dashboard, you will need to add InfluxDB as a data source and import the Varken dashboard. Follow the steps below to do this: 
+
+#### Add InfluxDB data source
+1) Open `monitoring.ip_address` and login with the username `admin` & password `admin`
+2) Set a new admin password
+3) Click the green "Add Data Source" button
+4) Click the "InfluxDB" button
+5) Set "URL" to `http://influxdb:8086`
+6) Set "Database" to `jarvis`
+7) Click "Save & Test" & check it succeeds saying "Data source is working"
+
+#### Importing the dashboard
+1) Click the 2nd item on the left sidebar (The icon that looks like a 2x2 grid)
+2) Click the green "New Dashboard" button
+3) Click the "New Dashboard" text in the top left
+4) Click the "Import Dashboard" button
+5) Open [github.com/NuroDev/jarvis/blob/master/dashboard.json](https://github.com/NuroDev/jarvis/blob/master/dashboard.json) and copy the JSON and paste it into the "Or Paste JSON" text field & click the blue "Load"
+6) Set `varken` to "InfluxDB" in the dropdown
+7) (Optional) Set library names
+8) (Optional) Set Ombi URL
+9) (Optional) Set Tautulli URL
+10) Click the green "Import" button
+
+And you're done. Grafana has all been set up and is now running 👍🏻
+
+# 🏠 Heimdall:
+TODO
