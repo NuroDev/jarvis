@@ -74,7 +74,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
-      - "8181:8080"
+      - "9090:8080"
     labels:
       - "traefik.frontend.rule=Host:cadvisor.${DOMAIN}"
 
@@ -163,6 +163,23 @@ services:
       - "traefik.frontend.rule=Host:plex.${DOMAIN}"
       - "traefik.port=32400"
 
+  # Plex monitoring, analytics & notifications
+  tautulli:
+    image: linuxserver/tautulli:latest
+    container_name: tautulli
+    restart: always
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - TZ=Europe/London
+    volumes:
+      - ${CONFIG_DIR}/tautulli:/config
+      - ${CONFIG_DIR}/plex/Library/Application Support/Plex Media Server/Logs/:/logs
+    ports:
+      - "8181:8181"
+    labels:
+      - "traefik.frontend.rule=Host:tautulli.${DOMAIN}"
+      
   # Movies/TV requesting
   ombi:
     image: linuxserver/ombi:latest
