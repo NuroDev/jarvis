@@ -6,7 +6,7 @@ networks:
 
 services:
     cadvisor:
-        image: google/cadvisor
+        image: 'google/cadvisor:latest'
         container_name: cadvisor
         restart: always
         networks:
