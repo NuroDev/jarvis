@@ -1,36 +1,41 @@
 version: "3"
 
 services:
-  # Automatic container updating/restarting system
-  watchtower:
-    image: v2tec/watchtower:latest
-    container_name: watchtower
+  # Docker resource monitoring
+  cadvisor:
+    image: google/cadvisor
+    container_name: cadvisor
     restart: always
-    network_mode: host
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
-  # Reverse Proxy
-  traefik:
-    image: traefik:latest
-    container_name: traefik
-    restart: always
-    networks:
-      - default
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
-    expose:
-      - 8080
-    command: --api --docker
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "${CONFIG_DIR}/traefik/traefik.toml:/traefik.toml"
-      - "${CONFIG_DIR}/traefik/acme.json:/acme.json"
+      - "9090:8080"
     labels:
-      - "traefik.frontend.rule=Host:proxy.${DOMAIN}"
-      - "traefik.port=8080"
+      - "traefik.frontend.rule=Host:cadvisor.${DOMAIN}"
+
+  # TODO: Google Drive Fuse (Writable Google Drive mount)
+
+  # Grafana dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - ${CONFIG_DIR}/grafana:/var/lib/grafana
+      - ${CONFIG_DIR}/grafana/provisioning/:/etc/grafana/provisioning
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+    depends_on:
+      - influxdb
+      - cadvisor
+      - varken
+    labels:
+      - "traefik.frontend.rule=Host:monitoring.${DOMAIN}"
 
   # Stack manager
   heimdall:
@@ -63,55 +68,23 @@ services:
     labels:
       - "traefik.frontend.rule=Host:db.${DOMAIN}"
 
-  # Docker resource monitoring
-  cadvisor:
-    image: google/cadvisor
-    container_name: cadvisor
+  # Movies/TV requesting
+  ombi:
+    image: linuxserver/ombi:latest
+    container_name: ombi
     restart: always
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
     ports:
-      - "9090:8080"
-    labels:
-      - "traefik.frontend.rule=Host:cadvisor.${DOMAIN}"
-
-  # Varken (Plex data aggregator)
-  varken:
-    image: boerderij/varken:latest
-    container_name: varken
-    restart: always
-    volumes:
-      - ${CONFIG_DIR}/varken:/config
+      - "3579:3579"
     environment:
-      - PGID=${GID}
       - PUID=${UID}
+      - PGID=${GID}
       - TZ=Europe/London
-    depends_on:
-      - influxdb
-
-  # Grafana dashboard
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    restart: always
-    ports:
-      - "3001:3000"
     volumes:
-      - ${CONFIG_DIR}/grafana:/var/lib/grafana
-      - ${CONFIG_DIR}/grafana/provisioning/:/etc/grafana/provisioning
-    environment:
-      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+      - ${CONFIG_DIR}/ombi:/config
     depends_on:
-      - influxdb
-      - cadvisor
-      - varken
+      - plex
     labels:
-      - "traefik.frontend.rule=Host:monitoring.${DOMAIN}"
-
-  # TODO: Google Drive Fuse (Writable Google Drive mount)
+      - "traefik.frontend.rule=Host:request.${DOMAIN}"
 
   # Plexdrive (Read-only Google Drive mount)
   # plexdrive:
@@ -179,19 +152,40 @@ services:
       - "8181:8181"
     labels:
       - "traefik.frontend.rule=Host:tautulli.${DOMAIN}"
-      
-  # Movies/TV requesting
-  ombi:
-    image: linuxserver/ombi:latest
-    container_name: ombi
+
+  # Reverse Proxy
+  traefik:
+    image: traefik:latest
+    container_name: traefik
     restart: always
+    networks:
+      - default
     ports:
-      - "3579:3579"
-    environment:
-      - PUID=${UID}
-      - PGID=${GID}
-      - TZ=Europe/London
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    expose:
+      - 8080
+    command: --api --docker
     volumes:
-      - ${CONFIG_DIR}/ombi:/config
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "${CONFIG_DIR}/traefik/traefik.toml:/traefik.toml"
+      - "${CONFIG_DIR}/traefik/acme.json:/acme.json"
     labels:
-      - "traefik.frontend.rule=Host:request.${DOMAIN}"
+      - "traefik.frontend.rule=Host:proxy.${DOMAIN}"
+      - "traefik.port=8080"
+
+  # Varken (Plex data aggregator)
+  varken:
+    image: boerderij/varken:latest
+    container_name: varken
+    restart: always
+    volumes:
+      - ${CONFIG_DIR}/varken:/config
+    environment:
+      - PGID=${GID}
+      - PUID=${UID}
+      - TZ=Europe/London
+    depends_on:
+      - influxdb
+      - tautulli
