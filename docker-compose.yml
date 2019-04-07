@@ -61,7 +61,7 @@ services:
     volumes:
       - ${CONFIG_DIR}/influxdb:/var/lib/influxdb
     labels:
-      - "traefik.frontend.rule=Host:database.${DOMAIN}"
+      - "traefik.frontend.rule=Host:db.${DOMAIN}"
 
   # Docker resource monitoring
   cadvisor:
@@ -190,6 +190,7 @@ services:
     environment:
       - PUID=${UID}
       - PGID=${GID}
+      - TZ=Europe/London
     volumes:
       - ${CONFIG_DIR}/ombi:/config
     labels:
