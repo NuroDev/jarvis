@@ -164,7 +164,6 @@ services:
             - '${CONFIG_DIR}/traefik/traefik.toml:/traefik.toml'
             - '${CONFIG_DIR}/traefik/acme.json:/acme.json'
         labels:
-            - 'traefik.frontend.auth.basic=${DEFAULT_USERNAME}:${DEFAULT_PASSWORD}'
             - 'traefik.frontend.rule=Host:proxy.${DOMAIN}'
             - 'traefik.port=8080'
     
