@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="2692px" height="1536px" viewBox="0 0 2692 1536" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Logo+Text" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <text id="JARVIS" font-family="FasterOne-Regular, Faster One" font-size="500" font-style="italic" font-weight="normal" letter-spacing="1" fill="#303136">
-            <tspan x="267" y="1350">JARVI</tspan>
-            <tspan x="2026.5" y="1350" letter-spacing="0.333333343">S</tspan>
+        <text id="JARVIS" font-family="FasterOne-Regular, Faster One" font-size="400" font-style="italic" font-weight="normal" letter-spacing="1" fill="#303136">
+            <tspan x="483" y="1323">JARVI</tspan>
+            <tspan x="1891.6" y="1323" letter-spacing="0.3333333">S</tspan>
         </text>
         <g id="Logo" transform="translate(835.000000, 0.000000)" stroke-linecap="round" stroke-linejoin="round">
             <path d="M871,670.632738 L871,351.367262 C870.970795,322.880865 855.769149,296.569295 831.111111,282.326103 L551.888889,122.693366 C527.205559,108.435545 496.794441,108.435545 472.111111,122.693366 L192.888889,282.326103 C168.230851,296.569295 153.029205,322.880865 153,351.367262 L153,670.632738 C153.029205,699.119135 168.230851,725.430705 192.888889,739.673897 L472.111111,899.306634 C496.794441,913.564455 527.205559,913.564455 551.888889,899.306634 L831.111111,739.673897 C855.769149,725.430705 870.970795,699.119135 871,670.632738 Z" id="BG" stroke="#303136" stroke-width="40"></path>
