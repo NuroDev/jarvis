@@ -54,8 +54,8 @@ services:
             - '8076:80'
             - '444:443'
         environment:
-            - 'PUID=${UID}'
-            - 'PGID=${GID}'
+            - 'PUID=${USER_UID}'
+            - 'PGID=${USER_GID}'
             - 'TZ=Europe/London'
         volumes:
             - '${CONFIG_DIR}/heimdall:/config'
@@ -88,8 +88,8 @@ services:
         ports:
             - '8078:3579'
         environment:
-            - 'PUID=${UID}'
-            - 'PGID=${GID}'
+            - 'PUID=${USER_UID}'
+            - 'PGID=${USER_GID}'
             - 'TZ=Europe/London'
         volumes:
             - '${CONFIG_DIR}/ombi:/config'
@@ -114,8 +114,8 @@ services:
             - '1900:1900/udp'
         environment:
             - 'VERSION=docker'
-            - 'PUID=${UID}'
-            - 'PGID=${GID}'
+            - 'PUID=${USER_UID}'
+            - 'PGID=${USER_GID}'
         volumes:
             - '${CONFIG_DIR}/plex:/config'
             - '${TRANSCODE_DIR}:/transcode'
@@ -136,8 +136,8 @@ services:
         ports:
             - '8079:8181'
         environment:
-            - 'PUID=${UID}'
-            - 'PGID=${GID}'
+            - 'PUID=${USER_UID}'
+            - 'PGID=${USER_GID}'
             - 'TZ=Europe/London'
         volumes:
             - '${CONFIG_DIR}/tautulli:/config'
@@ -164,6 +164,7 @@ services:
             - '${CONFIG_DIR}/traefik/traefik.toml:/traefik.toml'
             - '${CONFIG_DIR}/traefik/acme.json:/acme.json'
         labels:
+            - 'traefik.frontend.auth.basic=${DEFAULT_USERNAME}:${DEFAULT_PASSWORD}'
             - 'traefik.frontend.rule=Host:proxy.${DOMAIN}'
             - 'traefik.port=8080'
     
@@ -175,8 +176,8 @@ services:
         volumes:
             - '${CONFIG_DIR}/varken:/config'
         environment:
-            - 'PGID=${GID}'
-            - 'PUID=${UID}'
+            - 'PGID=${USER_GID}'
+            - 'PUID=${USER_UID}'
             - 'TZ=Europe/London'
         depends_on:
             - influxdb
