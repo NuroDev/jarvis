@@ -13,7 +13,7 @@ services:
         networks:
             - jarvis
         ports:
-            - '8074:8080'
+            - '9090:8080'
         volumes:
             - '/:/rootfs:ro'
             - '/var/run:/var/run:rw'
@@ -30,15 +30,15 @@ services:
         networks:
             - jarvis
         ports:
-            - '8075:3000'
+            - '3000:3000'
         volumes:
             - '${CONFIG_DIR}/grafana:/var/lib/grafana'
             - '${CONFIG_DIR}/grafana/provisioning/:/etc/grafana/provisioning'
         environment:
             - 'GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel'
         depends_on:
-            - influxdb
             - cadvisor
+            - influxdb
             - varken
         labels:
             - 'traefik.frontend.rule=Host:monitoring.${DOMAIN}'
@@ -51,7 +51,7 @@ services:
         networks:
             - jarvis
         ports:
-            - '8076:80'
+            - '81:80'
             - '444:443'
         environment:
             - 'PUID=${USER_UID}'
@@ -70,7 +70,7 @@ services:
         networks:
             - jarvis
         ports:
-            - '8077:8086'
+            - '8086:8086'
         environment:
             - INFLUXDB_DB=jarvis
         volumes:
@@ -83,10 +83,8 @@ services:
         image: 'linuxserver/ombi:latest'
         container_name: ombi
         restart: always
-        networks:
-            - jarvis
         ports:
-            - '8078:3579'
+            - '3579:3579'
         environment:
             - 'PUID=${USER_UID}'
             - 'PGID=${USER_GID}'
@@ -134,7 +132,7 @@ services:
         networks:
             - jarvis
         ports:
-            - '8079:8181'
+            - '8181:8181'
         environment:
             - 'PUID=${USER_UID}'
             - 'PGID=${USER_GID}'
@@ -161,8 +159,8 @@ services:
             - 8080
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock'
-            - '${CONFIG_DIR}/traefik/traefik.toml:/traefik.toml'
-            - '${CONFIG_DIR}/traefik/acme.json:/acme.json'
+            - '${CONFIG_DIR}/traefik.toml:/traefik.toml'
+            - '${CONFIG_DIR}/acme.json:/acme.json'
         labels:
             - 'traefik.frontend.rule=Host:proxy.${DOMAIN}'
             - 'traefik.port=8080'
