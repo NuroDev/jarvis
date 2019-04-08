@@ -2,6 +2,14 @@
     <h1>🔨 Configure:</h1>
 </div>
 
+# 🤫 Environment Variables:
+Before you can get started, you will need to create the required `.env` file. The best way to do this is to copy the example `.env` file's provided. Run the following commend for both the frontend and the backend:
+```
+cp example.env .env
+```
+Once the `.env` file has been copied, open the file in your chosen editor, EG: Vim, Emacs, Nano, etc. When in there, change the required directories to point to your desired locations.
+You will also need to enter your domain name and login details for the Transmission VPN in the backend env file.
+
 # 🗄️ Google Drive Fuse:
 TODO
 
