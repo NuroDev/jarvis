@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./logo.svg" />
+    <img src="./logo.png" />
     <h1>Jarvis</h1>
     <p>Quick & easy to set up home media stack</p>
 </div>
