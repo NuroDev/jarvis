@@ -1,7 +1,7 @@
 <div align="center">
-    <img src="https://i.imgur.com/EdSHQCW.png" />
+    <img src="./logo.svg" width="256px" height="256px" />
     <h1>Jarvis</h1>
-    <p>Quick & easy to set up automated cloud media system</p>
+    <p>Quick & easy to set up cloud based media stack</p>
 </div>
 
 ## 📋 Requirements:
@@ -26,8 +26,7 @@ Once the `.env` file has been copied, open the file in your chosen editor, EG: V
 You will also need to enter your domain name and login details for the Transmission VPN in the backend env file.
 
 ## 🔧 Configure:
-Sadly there are some containers that do require some extra setup to get up and running. Others will require some configuring once the application is setup and running to get working correctly.
-You can find all documentation for all container configuration in the [config.md file](https://github.com/NuroDev/jarvis/blob/master/config.md)
+Sadly there are some containers that do require some extra setup to get up and running. All documentation for this can be found [here](https://github.com/NuroDev/jarvis/blob/master/config.md)
 
 ## 🚀 Usage:
 ```
