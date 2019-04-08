@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="1024px" height="1024px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
-    <title>Logo</title>
-    <desc>Created with Sketch.</desc>
     <g id="Logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <path d="M854,663.031179 L854,358.968821 C853.972178,331.838919 839.490387,306.780281 816,293.215337 L550,141.184158 C526.485518,127.605281 497.514482,127.605281 474,141.184158 L208,293.215337 C184.509613,306.780281 170.027822,331.838919 170,358.968821 L170,663.031179 C170.027822,690.161081 184.509613,715.219719 208,728.784663 L474,880.815842 C497.514482,894.394719 526.485518,894.394719 550,880.815842 L816,728.784663 C839.490387,715.219719 853.972178,690.161081 854,663.031179 Z" id="BG" stroke="#303136" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"></path>
         <g id="Icon" transform="translate(217.000000, 183.000000)" stroke="#4C9AE5" stroke-width="30">
             <g>
                 <path d="M590,459.689774 L590,197.505693 C589.976002,174.112372 577.484398,152.505041 557.222222,140.808386 L327.777778,9.71634577 C307.494818,-1.992323 282.505182,-1.992323 262.222222,9.71634577 L32.7777778,140.808386 C12.5156018,152.505041 0.0239982087,174.112372 0,197.505693 L0,459.689774 C0.0239982087,483.083096 12.5156018,504.690427 32.7777778,516.387081 L262.222222,647.479122 C282.505182,659.18779 307.494818,659.18779 327.777778,647.479122 L557.222222,516.387081 C577.484398,504.690427 589.976002,483.083096 590,459.689774 Z" id="Path" stroke-linecap="round" stroke-linejoin="round"></path>
-                <polygon id="Polygon" points="296 95 411 161 296 227 181 161"></polygon>
                 <polyline id="Bottom" stroke-linecap="round" stroke-linejoin="round" points="9.33544304 393.597734 295.466772 559.065156 581.598101 393.597734"></polyline>
                 <polyline id="Middle" stroke-linecap="round" stroke-linejoin="round" points="9.33544304 283.597734 295.466772 449.065156 581.598101 283.597734"></polyline>
                 <polyline id="Top" stroke-linecap="round" stroke-linejoin="round" points="9.33544304 163.597734 295.466772 329.065156 581.598101 163.597734"></polyline>
