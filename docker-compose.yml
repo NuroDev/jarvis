@@ -5,6 +5,7 @@ networks:
         external: false
 
 services:
+    # Container resource analytics
     cadvisor:
         image: 'google/cadvisor:latest'
         container_name: cadvisor
@@ -12,7 +13,7 @@ services:
         networks:
             - jarvis
         ports:
-            - '9090:8080'
+            - '8074:8080'
         volumes:
             - '/:/rootfs:ro'
             - '/var/run:/var/run:rw'
@@ -20,6 +21,8 @@ services:
             - '/var/lib/docker/:/var/lib/docker:ro'
         labels:
             - 'traefik.frontend.rule=Host:cadvisor.${DOMAIN}'
+
+    # Monitoring dashboard
     grafana:
         image: 'grafana/grafana:latest'
         container_name: grafana
@@ -27,7 +30,7 @@ services:
         networks:
             - jarvis
         ports:
-            - '3001:3000'
+            - '8075:3000'
         volumes:
             - '${CONFIG_DIR}/grafana:/var/lib/grafana'
             - '${CONFIG_DIR}/grafana/provisioning/:/etc/grafana/provisioning'
@@ -39,6 +42,8 @@ services:
             - varken
         labels:
             - 'traefik.frontend.rule=Host:monitoring.${DOMAIN}'
+
+    # Stack manager
     heimdall:
         image: 'linuxserver/heimdall:latest'
         container_name: heimdall
@@ -46,16 +51,18 @@ services:
         networks:
             - jarvis
         ports:
-            - '81:80'
+            - '8076:80'
             - '444:443'
         environment:
             - 'PUID=${UID}'
             - 'PGID=${GID}'
-            - TZ=Europe/London
+            - 'TZ=Europe/London'
         volumes:
             - '${CONFIG_DIR}/heimdall:/config'
         labels:
             - 'traefik.frontend.rule=Host:${DOMAIN},manager.${DOMAIN}'
+
+    # Database for Grafana/Varken
     influxdb:
         image: 'influxdb:latest'
         container_name: influxdb
@@ -63,13 +70,15 @@ services:
         networks:
             - jarvis
         ports:
-            - '8086:8086'
+            - '8077:8086'
         environment:
             - INFLUXDB_DB=jarvis
         volumes:
             - '${CONFIG_DIR}/influxdb:/var/lib/influxdb'
         labels:
             - 'traefik.frontend.rule=Host:db.${DOMAIN}'
+
+    # Request movies/TV shows
     ombi:
         image: 'linuxserver/ombi:latest'
         container_name: ombi
@@ -77,17 +86,19 @@ services:
         networks:
             - jarvis
         ports:
-            - '3579:3579'
+            - '8078:3579'
         environment:
             - 'PUID=${UID}'
             - 'PGID=${GID}'
-            - TZ=Europe/London
+            - 'TZ=Europe/London'
         volumes:
             - '${CONFIG_DIR}/ombi:/config'
         depends_on:
             - plex
         labels:
             - 'traefik.frontend.rule=Host:request.${DOMAIN}'
+
+    # Media streaming
     plex:
         image: 'linuxserver/plex:latest'
         container_name: plex
@@ -102,7 +113,7 @@ services:
             - '5353:5353/udp'
             - '1900:1900/udp'
         environment:
-            - VERSION=docker
+            - 'VERSION=docker'
             - 'PUID=${UID}'
             - 'PGID=${GID}'
         volumes:
@@ -113,7 +124,9 @@ services:
             - '${MEDIA_READ_DIR}/extras:/data/extras'
         labels:
             - 'traefik.frontend.rule=Host:plex.${DOMAIN}'
-            - traefik.port=32400
+            - 'traefik.port=32400'
+
+    # Plex server monitoring/analytics
     tautulli:
         image: 'linuxserver/tautulli:latest'
         container_name: tautulli
@@ -121,20 +134,23 @@ services:
         networks:
             - jarvis
         ports:
-            - '8181:8181'
+            - '8079:8181'
         environment:
             - 'PUID=${UID}'
             - 'PGID=${GID}'
-            - TZ=Europe/London
+            - 'TZ=Europe/London'
         volumes:
             - '${CONFIG_DIR}/tautulli:/config'
             - '${CONFIG_DIR}/plex/Library/Application Support/Plex Media Server/Logs/:/logs'
         labels:
             - 'traefik.frontend.rule=Host:tautulli.${DOMAIN}'
+    
+    # Reverse Proxy
     traefik:
         image: 'traefik:latest'
         container_name: traefik
         restart: always
+        command: '--api --docker'
         networks:
             - jarvis
         ports:
@@ -143,7 +159,6 @@ services:
             - '8080:8080'
         expose:
             - 8080
-        command: '--api --docker'
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock'
             - '${CONFIG_DIR}/traefik/traefik.toml:/traefik.toml'
@@ -151,6 +166,8 @@ services:
         labels:
             - 'traefik.frontend.rule=Host:proxy.${DOMAIN}'
             - 'traefik.port=8080'
+    
+    # Plex data aggregator
     varken:
         image: 'boerderij/varken:latest'
         container_name: varken
@@ -160,7 +177,7 @@ services:
         environment:
             - 'PGID=${GID}'
             - 'PUID=${UID}'
-            - TZ=Europe/London
+            - 'TZ=Europe/London'
         depends_on:
             - influxdb
             - tautulli
