@@ -59,7 +59,17 @@ echo "
 # User Info
 USER_UID=$({)id -u)
 USER_GID=$({)id -g)
+" >> .env
+read -p "Email Address:" email_address
+if test -z "$email_address"; then
+    domain_name="name@email.com"
+fi
+echo "
+EMAIL=${email_address}
 
+" >> .env
+
+echo "
 # Networking
 IP=$(hostname -I)
 " >> .env
@@ -103,7 +113,10 @@ echo "
 ║   Configuring Traefik 🚦                                    ║
 ╚═════════════════════════════════════════════════════════════╝"
 
-# Configure Traefik here...
+# Download Traefik config files from GitHub and move it to config directory
+curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/templates/traefik.toml -o ./${config_dir}/traefik.toml
+curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/templates/acme.json -o ./${config_dir}/acme.json
+chmod 600 ./${config_dir}/acme.json
 
 echo "
 ╔═════════════════════════════════════════════════════════════╗
@@ -125,7 +138,8 @@ echo "
 ║   Configuring Varken 🐷                                     ║
 ╚═════════════════════════════════════════════════════════════╝"
 
-# Configure Varken here...
+# Download Varken config from GitHub and move it to config directory
+curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/templates/varken.ini -o ./${config_dir}/varken/varken.ini
 
 echo "
 ╔═════════════════════════════════════════════════════════════╗
