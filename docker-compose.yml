@@ -5,7 +5,7 @@ networks:
         external: false
 
 services:
-    # Container resource analytics
+    # Docker Metrics
     cadvisor:
         image: 'google/cadvisor:latest'
         container_name: cadvisor
@@ -22,7 +22,7 @@ services:
         labels:
             - 'traefik.frontend.rule=Host:cadvisor.${DOMAIN}'
 
-    # Monitoring dashboard
+    # Monitoring Dashboard
     grafana:
         image: 'grafana/grafana:latest'
         container_name: grafana
@@ -43,7 +43,7 @@ services:
         labels:
             - 'traefik.frontend.rule=Host:monitoring.${DOMAIN}'
 
-    # Stack manager
+    # Stack Manager
     heimdall:
         image: 'linuxserver/heimdall:latest'
         container_name: heimdall
@@ -62,7 +62,7 @@ services:
         labels:
             - 'traefik.frontend.rule=Host:${DOMAIN},manager.${DOMAIN}'
 
-    # Database for Grafana/Varken
+    # Database For Grafana/Varken
     influxdb:
         image: 'influxdb:latest'
         container_name: influxdb
@@ -78,7 +78,7 @@ services:
         labels:
             - 'traefik.frontend.rule=Host:db.${DOMAIN}'
 
-    # Request movies/TV shows
+    # Content requesting
     ombi:
         image: 'linuxserver/ombi:latest'
         container_name: ombi
@@ -96,7 +96,7 @@ services:
         labels:
             - 'traefik.frontend.rule=Host:request.${DOMAIN}'
 
-    # Media streaming
+    # Content Streaming
     plex:
         image: 'linuxserver/plex:latest'
         container_name: plex
@@ -124,7 +124,7 @@ services:
             - 'traefik.frontend.rule=Host:plex.${DOMAIN}'
             - 'traefik.port=32400'
 
-    # Plex server monitoring/analytics
+    # Plex Metrics
     tautulli:
         image: 'linuxserver/tautulli:latest'
         container_name: tautulli
@@ -165,7 +165,7 @@ services:
             - 'traefik.frontend.rule=Host:proxy.${DOMAIN}'
             - 'traefik.port=8080'
     
-    # Plex data aggregator
+    # Plex Metrics Aggregator
     varken:
         image: 'boerderij/varken:latest'
         container_name: varken
