@@ -12,7 +12,7 @@ Sadly there some things that do need to be configured to set up Jarvis. Most of 
 
 ## 🚀 Usage:
 ```shell
-curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/install.sh | sh
+curl -L jarvis.nuro.sh | sh
 ```
 
 ## 🔑 Access:
