@@ -57,8 +57,8 @@ echo "
 touch .env
 echo "
 # User Info
-USER_UID=$({)id -u)
-USER_GID=$({)id -g)
+USER_UID=$(id -u)
+USER_GID=$(id -g)
 " >> .env
 read -p "Email Address:" email_address
 if test -z "$email_address"; then
