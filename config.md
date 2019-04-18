@@ -66,7 +66,7 @@ To set up Grafana, our monitoring dashboard, you will need to add InfluxDB as a 
 2) Click the green "New Dashboard" button
 3) Click the "New Dashboard" text in the top left
 4) Click the "Import Dashboard" button
-5) Open [github.com/NuroDev/jarvis/blob/master/dashboard.json](https://github.com/NuroDev/jarvis/blob/master/dashboard.json) and copy the JSON and paste it into the "Or Paste JSON" text field & click the blue "Load"
+5) Open [github.com/NuroDev/jarvis/blob/master/templates/dashboard.json](https://github.com/NuroDev/jarvis/blob/master/templates/dashboard.json) and copy the JSON and paste it into the "Or Paste JSON" text field & click the blue "Load"
 6) Set `varken` to "InfluxDB" in the dropdown
 7) (Optional) Set library names
 8) (Optional) Set Ombi URL
