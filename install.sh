@@ -53,14 +53,19 @@ echo "
 ║   Configuring .env 🤫                                       ║
 ╚═════════════════════════════════════════════════════════════╝"
 
-# Create empty `.env` file and get user input for config environment vars
+# Create empty `.env` file
+if [ -f ".env" ]; then
+    rm .env
+fi
 touch .env
+
+# Get email address from user for Let's Encrypt
 echo "
 # User Info
 USER_UID=$(id -u)
 USER_GID=$(id -g)
 " >> .env
-read -p "Email Address:" email_address
+read -p "Email Address: " email_address
 if test -z "$email_address"; then
     domain_name="name@email.com"
 fi
@@ -69,35 +74,37 @@ EMAIL=${email_address}
 
 " >> .env
 
+# Get config info from the user
 echo "
 # Networking
 IP=$(hostname -I)
 " >> .env
-read -p "Domain Name (Default: 'localhost'):" domain_name
+read -p "Domain Name (Default: 'localhost'): " domain_name
 if test -z "$domain_name"; then
     domain_name="localhost"
 fi
 
-read -p "Config Directory (Default: './config'):" config_dir
+read -p "Config Directory (Default: './config'): " config_dir
 if test -z "$config_dir"; then
     config_dir="./config"
 fi
 
-read -p "Media Write Directory (Default: './media_write'):" media_write
+read -p "Media Write Directory (Default: './media_write'): " media_write
 if test -z "$media_write"; then
     media_write="./media_write"
 fi
 
-read -p "Media Read Directory (Default: './media_read'):" media_read
+read -p "Media Read Directory (Default: './media_read'): " media_read
 if test -z "$media_read"; then
     media_read="./media_read"
 fi
 
-read -p "Transcode Directory (Default: './transcode'):" transcode_dir
+read -p "Transcode Directory (Default: './transcode'): " transcode_dir
 if test -z "$transcode_dir"; then
     transcode_dir="./transcode"
 fi
 
+# Echo directories to `.env`
 echo "
 DOMAIN=${domain_name}
 
@@ -108,15 +115,21 @@ MEDIA_READ_DIR=${media_read}
 TRANSCODE_DIR=${transcode_dir}
 " >> .env
 
+# Create directories
+mkdir $config_dir
+mkdir $media_write
+mkdir $media_read
+mkdir $transcode_dir
+
 echo "
 ╔═════════════════════════════════════════════════════════════╗
 ║   Configuring Traefik 🚦                                    ║
 ╚═════════════════════════════════════════════════════════════╝"
 
 # Download Traefik config files from GitHub and move it to config directory
-curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/templates/traefik.toml -o ./${config_dir}/traefik.toml
-curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/templates/acme.json -o ./${config_dir}/acme.json
-chmod 600 ./${config_dir}/acme.json
+curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/templates/traefik.toml -o ${config_dir}/traefik.toml
+curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/templates/acme.json -o ${config_dir}/acme.json
+chmod 600 ${config_dir}/acme.json
 
 echo "
 ╔═════════════════════════════════════════════════════════════╗
