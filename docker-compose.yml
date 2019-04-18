@@ -20,7 +20,10 @@ services:
             - '/sys:/sys:ro'
             - '/var/lib/docker/:/var/lib/docker:ro'
         labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=jarvis"
             - 'traefik.frontend.rule=Host:cadvisor.${DOMAIN}'
+            - "traefik.protocol=https"
 
     # Monitoring Dashboard
     grafana:
@@ -41,7 +44,10 @@ services:
             - influxdb
             - varken
         labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=jarvis"
             - 'traefik.frontend.rule=Host:monitoring.${DOMAIN}'
+            - "traefik.protocol=https"
 
     # Stack Manager
     heimdall:
@@ -60,7 +66,10 @@ services:
         volumes:
             - '${CONFIG_DIR}/heimdall:/config'
         labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=jarvis"
             - 'traefik.frontend.rule=Host:${DOMAIN},manager.${DOMAIN}'
+            - "traefik.protocol=https"
 
     # Database For Grafana/Varken
     influxdb:
@@ -76,7 +85,10 @@ services:
         volumes:
             - '${CONFIG_DIR}/influxdb:/var/lib/influxdb'
         labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=jarvis"
             - 'traefik.frontend.rule=Host:db.${DOMAIN}'
+            - "traefik.protocol=https"
 
     # Content requesting
     ombi:
@@ -94,7 +106,10 @@ services:
         depends_on:
             - plex
         labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=jarvis"
             - 'traefik.frontend.rule=Host:request.${DOMAIN}'
+            - "traefik.protocol=https"
 
     # Content Streaming
     plex:
@@ -121,8 +136,11 @@ services:
             - '${MEDIA_READ_DIR}/tvshows:/data/tvshows'
             - '${MEDIA_READ_DIR}/extras:/data/extras'
         labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=jarvis"
             - 'traefik.frontend.rule=Host:plex.${DOMAIN}'
-            - 'traefik.port=32400'
+            - "traefik.protocol=https"
+            - "traefik.port=32400"
 
     # Plex Metrics
     tautulli:
@@ -141,7 +159,10 @@ services:
             - '${CONFIG_DIR}/tautulli:/config'
             - '${CONFIG_DIR}/plex/Library/Application Support/Plex Media Server/Logs/:/logs'
         labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=jarvis"
             - 'traefik.frontend.rule=Host:tautulli.${DOMAIN}'
+            - "traefik.protocol=https"
     
     # Reverse Proxy
     traefik:
@@ -162,7 +183,10 @@ services:
             - '${CONFIG_DIR}/traefik.toml:/traefik.toml'
             - '${CONFIG_DIR}/acme.json:/acme.json'
         labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=jarvis"
             - 'traefik.frontend.rule=Host:proxy.${DOMAIN}'
+            - "traefik.protocol=https"
             - 'traefik.port=8080'
     
     # Plex Metrics Aggregator
