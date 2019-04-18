@@ -7,20 +7,12 @@ These are the required libraries/packages to run this stack:
  - [Docker](https://docker.com)
  - [Docker Compose](https://docs.docker.com/compose/)
 
-## ⬇️ Installation:
-```shell
-git clone https://github.com/NuroDev/jarvis.git
-```
-```shell
-cd jarvis/
-```
-
 ## 🔧 Configure:
-Sadly there are some things that need to be configured to get Jarvis up and running. Some containers do require some extra setup to get up and running as well as setting up your `.env` config. All documentation for this can be found [here](https://github.com/NuroDev/jarvis/blob/master/config.md)
+Sadly there some things that do need to be configured to set up Jarvis. Most of them will be set up automatically via the install script. However there are a few that will require manual creation. All documentation for configuring Jarvis, for both manual and automatic details, can be found in the [config.md](https://github.com/NuroDev/jarvis/blob/master/config.md) file.
 
 ## 🚀 Usage:
-```
-docker-compose up -d
+```shell
+curl -L https://raw.githubusercontent.com/NuroDev/jarvis/master/install.sh | sh
 ```
 
 ## 🔑 Access:
