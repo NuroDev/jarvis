@@ -18,13 +18,13 @@ curl -L jarvis.nuro.sh | sh
 ## 🔑 Access:
 | Container		| Description                | URL                    | Port        |
 | ------------- |:--------------------------:|:----------------------:|:-----------:|
-| Cadvisor		| Docker Metrics             | `cadvisor.ip_address`  | `8074`      |
-| Grafana		| Monitoring Dashboard       | `monitoring.ip_address`| `8075`      |
-| Heimdall		| Stack Manager              | `manager.ip_address`   | `8076`      |
-| Influx		| Database                   | `db.ip_address`        | `8077`      |
-| Ombi			| Content Requesting         | `request.ip_address`   | `8078`      |
+| Cadvisor		| Docker Metrics             | `cadvisor.ip_address`  | `9090`      |
+| Grafana		| Monitoring Dashboard       | `monitoring.ip_address`| `3000`      |
+| Heimdall		| Stack Manager              | `manager.ip_address`   | `81`        |
+| Influx		| Database                   | `db.ip_address`        | `8086`      |
+| Ombi			| Content Requesting         | `request.ip_address`   | `3579`      |
 | Plex      	| Content Streaming          | `plex.ip_address`      | `32400`     |
-| Tautulli      | Plex Metrics               | `tautulli.ip_address`  | `8079`      |
+| Tautulli      | Plex Metrics               | `tautulli.ip_address`  | `8181`      |
 | Traefik       | Reverse Proxy              | `proxy.ip_address`     | `8080`      |
 
 ## 📄 License:
