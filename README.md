@@ -9,7 +9,7 @@ These are the required libraries/packages to run this stack:
 
 ## 🚀 Usage:
 ```shell
-curl -L jarvis.nuro.sh | sh
+curl -L jarvis.nuro.dev | sh
 ```
 
 ## 🔧 Configure:
