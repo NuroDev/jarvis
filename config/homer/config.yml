@@ -1,0 +1,62 @@
+---
+  # Homepage configuration
+  # See # https://github.com/bastienwirtz/homer/blob/master/docs/configuration.md for complete guide
+  # See https://fontawesome.com/icons for icons options
+
+  subtitle: "Jarvis"
+
+  header: false
+  footer: false
+  
+  columns: "auto"
+  connectivityCheck: true
+  
+  theme: default
+  
+  # TODO: Disabling links remove themeing options
+  links:
+    - name: "GitHub"
+      icon: "fab fa-github"
+      url: "https://github.com/"
+  
+  services:
+    - name: "Application"
+      icon: "fa fa-cloud"
+      items:
+        - name: "Plex"
+          subtitle: "Watch content"
+          icon: "fa fa-play-circle"
+          url: "https://watch.localhost/"
+
+        - name: "Ombi"
+          subtitle: "Content requesting"
+          icon: "fa fa-tasks"
+          url: "https://request.localhost/"
+
+        - name: "Monitoring"
+          subtitle: "Grafana monitoring dashboard"
+          icon: "fa fa-chart-bar"
+          url: "https://monitoring.localhost/"
+
+    - name: "Metrics"
+      icon: "fa fa-chart-bar"
+      items:
+        - name: "Cadvisor"
+          subtitle: "Docker container metrics"
+          icon: "fa fa-docker"
+          url: "https://cadvisor.localhost/"
+
+        - name: "Node Exporter"
+          subtitle: "System metrics"
+          icon: "fa fa-server"
+          url: "https://node_exporter.localhost/"
+
+        - name: "Prometheus"
+          subtitle: "Metrics Database"
+          icon: "fa fa-database"
+          url: "https://prometheus.localhost/"
+
+        - name: "Tautulli"
+          subtitle: "Plex metrics"
+          icon: "fa fa-chart-pie"
+          url: "https://tautulli.localhost/"

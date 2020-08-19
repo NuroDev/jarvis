@@ -1,0 +1,36 @@
+{
+    # email me@email.com
+    # acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+{$DOMAIN} {
+    reverse_proxy homer:8080
+}
+
+cadvisor.{$DOMAIN} {
+    reverse_proxy cadvisor:8080
+}
+
+monitoring.{$DOMAIN} {
+    reverse_proxy grafana:3000
+}
+
+node_exporter.{$DOMAIN} {
+    reverse_proxy node_exporter:9100
+}
+
+request.{$DOMAIN} {
+    reverse_proxy ombi:3579
+}
+
+tautulli.{$DOMAIN} {
+    reverse_proxy tautulli:8181
+}
+
+prometheus.{$DOMAIN} {
+    reverse_proxy prometheus:9090
+}
+
+watch.{$DOMAIN} {
+    reverse_proxy plex:32400
+}

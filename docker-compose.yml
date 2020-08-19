@@ -1,113 +1,117 @@
-version: "3.3"
+version: "3.7"
 
 networks:
   jarvis:
     external: false
 
 services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    hostname: caddy
+    networks:
+      - jarvis
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - DOMAIN
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - $CONFIG_DIR:/config
+      - $DATA_DIR:/data
+
   cadvisor:
     image: google/cadvisor:latest
     container_name: cadvisor
-    restart: always
+    restart: unless-stopped
+    hostname: cadvisor
     networks:
-        - jarvis
-    labels:
-      - traefik.http.routers.cadvisor.rule=Host(`cadvisor.${DOMAIN}`)
+      - jarvis
     ports:
-      - 8081:8080
+      - 8080:8080
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro
 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
-    restart: always
+    restart: unless-stopped
+    user: root
+    hostname: grafana
     networks:
       - jarvis
-    labels:
-      - traefik.http.routers.grafana.rule=Host(`monitoring.${DOMAIN}`)
-    depends_on:
-      - cadvisor
-      - influxdb
-      - varken
-    environment:
-      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
     ports:
       - 3000:3000
+    depends_on:
+      - cadvisor
+      - node_exporter
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER
+      - GF_SECURITY_ADMIN_PASSWORD
+      - GF_USERS_ALLOW_SIGN_UP
     volumes:
-      - ${CONFIG_DIR}/grafana:/var/lib/grafana
-      - ${CONFIG_DIR}/grafana/provisioning/:/etc/grafana/provisioning
+      - $CONFIG_DIR/grafana:/var/lib/grafana
+      - $CONFIG_DIR/grafana/provisioning:/etc/grafana/provisioning
 
-  heimdall:
-    image: linuxserver/heimdall:latest
-    container_name: heimdall
-    restart: always
+  homer:
+    image: b4bz/homer:latest
+    container_name: homer
+    restart: unless-stopped
+    hostname: homer
     networks:
       - jarvis
-    labels:
-      - traefik.http.routers.heimdall.rule=Host(`${DOMAIN}`, `manager.${DOMAIN}`)
-    environment:
-      - PGID=${GID}
-      - PUID=${UID}
-      - TZ=Europe/London
-    ports:
-      - 81:80
-      - 444:443
     volumes:
-      - ${CONFIG_DIR}/heimdall:/config
+      - $CONFIG_DIR/homer/:/www/assets
 
-  influxdb:
-    image: influxdb:latest
-    container_name: influxdb
-    restart: always
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: node_exporter
+    restart: unless-stopped
+    hostname: node_exporter
     networks:
       - jarvis
-    labels:
-      - traefik.http.routers.influxdb.rule=Host(`db.${DOMAIN}`)
-    environment:
-      - INFLUXDB_DB=jarvis
     ports:
-      - 8083:8083
-      - 8086:8086
+      - 9100:9100
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
     volumes:
-      - ${CONFIG_DIR}/influxdb:/var/lib/influxdb
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
 
   ombi:
     image: linuxserver/ombi:latest
     container_name: ombi
-    restart: always
+    restart: unless-stopped
+    hostname: ombi
     networks:
       - jarvis
-    labels:
-      - traefik.http.routers.ombi.rule=Host(`request.${DOMAIN}`)
+    ports:
+      - 3579:3579
     depends_on:
       - plex
     environment:
-      - PUID=${UID}
-      - PGID=${GID}
       - TZ=Europe/London
-    ports:
-      - 3579:3579
     volumes:
-      - ${CONFIG_DIR}/ombi:/config
+      - $CONFIG_DIR/ombi:/config
 
   plex:
     image: plexinc/pms-docker:latest
     container_name: plex
     restart: always
+    hostname: plex
     networks:
       - jarvis
-    labels:
-      - traefik.http.routers.plex.rule=Host(`plex.${DOMAIN}`)
-      - traefik.http.services.plex.loadbalancer.server.port=32400
-    environment:
-      - ADVERTISE_IP="http://${DOMAIN}:32400"
-      - PGID=${GID}
-      - PUID=${UID}
-      - VERSION=latest
     ports:
       - 1900:1900/udp
       - 3005:3005/tcp
@@ -118,82 +122,59 @@ services:
       - 32414:32414/udp
       - 32469:32469/tcp
       - 8324:8324/tcp
+    environment:
+      - ADVERTISE_IP="http://$DOMAIN:32400"
+      - VERSION=latest
     volumes:
-      - ${CONFIG_DIR}/plex:/config
-      - ${TRANSCODE_DIR}:/transcode
-      - ${MEDIA_DIR}:/data
+      - $CONFIG_DIR/plex:/config
+      - $DATA_DIR/media:/data
+      - $DATA_DIR/transcode:/transcode
 
-  # TODO: Fix Traefik route overriding
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    hostname: prometheus
+    user: root
+    networks:
+      - jarvis
+    ports:
+      - 9090:9090
+    depends_on:
+      - cadvisor
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - $CONFIG_DIR/prometheus/config.yml:/etc/prometheus/prometheus.yml
+      - $CONFIG_DIR/prometheus/:/prometheus
+
   tautulli:
     image: linuxserver/tautulli:latest
     container_name: tautulli
     restart: always
+    hostname: tautulli
     networks:
         - jarvis
-    labels:
-      - traefik.http.routers.tautulli.rule=Host(`tautulli.${DOMAIN}`)
-      - traefik.http.services.tautulli.loadbalancer.server.port=8181
+    ports:
+      - 8181:8181
     depends_on:
       - plex
     environment:
-      - PUID=${UID}
-      - PGID=${GID}
       - TZ=Europe/London
-    ports:
-      - 8181:8181
     volumes:
-      - ${CONFIG_DIR}/tautulli:/config
-      - ${CONFIG_DIR}/plex/Library/Application Support/Plex Media Server/Logs/:/logs
-
-  traefik:
-    image: traefik:latest
-    container_name: traefik
-    networks:
-      - jarvis
-    labels:
-      - traefik.http.routers.proxy.rule=Host(`proxy.${DOMAIN}`)
-      - traefik.http.services.proxy.loadbalancer.server.port=8080
-    ports:
-      - 80:80
-      - 8080:8080
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${CONFIG_DIR}/acme.json:/etc/traefik/acme.json
-      - ${CONFIG_DIR}/traefik.toml:/etc/traefik/traefik.toml
-
-  varken:
-    image: boerderij/varken:latest
-    container_name: varken
-    restart: always
-    networks:
-      - jarvis
-    depends_on:
-      - influxdb
-      - ombi
-      - tautulli
-    environment:
-      - PGID=${GID}
-      - PUID=${UID}
-      - TZ=Europe/London
-      - VRKN_GLOBAL_LIDARR_SERVER_IDS=false
-      - VRKN_GLOBAL_MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY}
-      - VRKN_GLOBAL_OMBI_SERVER_IDS=1
-      - VRKN_GLOBAL_RADARR_SERVER_IDS=false
-      - VRKN_GLOBAL_SICKCHILL_SERVER_IDS=false
-      - VRKN_GLOBAL_SONARR_SERVER_IDS=false
-      - VRKN_GLOBAL_TAUTULLI_SERVER_IDS=1
-      - VRKN_GLOBAL_UNIFI_SERVER_IDS=false
-      - VRKN_INFLUXDB_PORT=8086
-      - VRKN_INFLUXDB_URL=influxdb
-      - VRKN_OMBI_1_URL=request.${DOMAIN}
-      - VRKN_TAUTULLI_1_URL=tautulli.${DOMAIN}:8181
-    volumes:
-      - ${CONFIG_DIR}/varken:/config
+      - $CONFIG_DIR/tautulli:/config
+      - $CONFIG_DIR/plex/Library/Application Support/Plex Media Server/Logs/:/logs
 
   watchtower:
-    image: v2tec/watchtower:latest
+    image: containrrr/watchtower:latest
     container_name: watchtower
-    restart: always
-    network_mode: host
+    restart: unless-stopped
+    networks:
+      - jarvis
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
