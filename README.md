@@ -1,33 +1,58 @@
 <div align="center">
-    <img src="./logo.png" />
+    <img src="./.github/assets/logo.png" />
 </div>
 
-## 📋 Requirements:
+## 📋 Requirements
 These are the required libraries/packages to run this stack:
  - [Docker](https://docker.com)
  - [Docker Compose](https://docs.docker.com/compose/)
 
-## 🚀 Usage:
+## 🚀 Usage
 ```shell
 curl -L jarvis.nuro.dev | sh
 ```
 
-## 🔧 Configure:
-Sadly there some things that do need to be configured to set up Jarvis. Most of them will be set up automatically via the install script. However there are a few that will require manual creation.
+## 🔧 Configure
+For the most part, once the stack has been setup and deployed there are 2 key configuration steps that needs to be done.
 
-All documentation for configuring Jarvis, for both manual and automatic details, can be found in the [wiki](https://github.com/NuroDev/jarvis/wiki).
 
-## 🔑 Access:
-| Container		| Description                | URL                    | Port        |
-| ------------- |:--------------------------:|:----------------------:|:-----------:|
-| Cadvisor		| Docker Metrics             | `cadvisor.ip_address`  | `9090`      |
-| Grafana		| Monitoring Dashboard       | `monitoring.ip_address`| `3000`      |
-| Heimdall		| Stack Manager              | `manager.ip_address`   | `81`        |
-| Influx		| Database                   | `db.ip_address`        | `8086`      |
-| Ombi			| Content Requesting         | `request.ip_address`   | `3579`      |
-| Plex      	| Content Streaming          | `plex.ip_address`      | `32400`     |
-| Tautulli      | Plex Metrics               | `tautulli.ip_address`  | `8181`      |
-| Traefik       | Reverse Proxy              | `proxy.ip_address`     | `8080`      |
+<details>
+  <summary>🏡 Homer</summary>
+  
+  The first step is to modify the Homer config file. This can be found under `config/homer/config.yml`.
 
-## 📄 License:
-MIT © [Ben Dixon](https://github.com/NuroDev/jarvis/blob/master/LICENSE)
+  In here you can modify your home dashboard with whatever links or customization you like. A number of service links have already been provided, however there is one key configration requirement and that is to modify the URL's set for each service to be the domain of your choice.
+
+</details>
+
+<details>
+  <summary>📫 Email (Optional)</summary>
+  
+  To generate a certificate from Let's Encrypt, an email address is required. As such in the `Caddyfile` a placeholder `email` global variable has been provided but commented out. Uncomment the variable by removing the `#` and entering your email address.
+
+  You can also optionally modify the `acme_ca` URL, which specifies the URL to the ACME CA's directory. However it is recommended to leave this to the default Let's Encrypt production endpoint unless you require the use of the Let's Encrypt [staging or development endpoints](https://letsencrypt.org/docs/staging-environment/).
+
+</details>
+
+## 🔑 Access
+| Container	        | Description                | URL                              |
+| ------------------|:--------------------------:|:--------------------------------:|
+| Cadvisor	        | Docker Metrics             | `cadvisor.ip_address`            |
+| Grafana	          | Monitoring Dashboard       | `monitoring.ip_address`          |
+| Homer 	          | Home Dashboard             | `ip_address`                     |
+| Node Exporter     | System Metrics             | `node_exporter.ip_address`       |
+| Ombi		          | Content Requesting         | `request.ip_address`             |
+| Plex              | Content Streaming          | `watch.ip_address`               |
+| Prometheus        | Metrics Database           | `prometheus.ip_address`          |
+| Tautulli          | Plex Metrics               | `tautulli.ip_address`            |
+
+## ⚠️ Disclaimer
+This stack is designed for self-hosted use and not for any sort of enterprise environment.
+
+However, if you do wish to modify your own installation to make it usable in such an environment then feel free to do so.
+The largest of such changes that are recommended are to remove or add [basicauth](https://caddyserver.com/docs/caddyfile/directives/basicauth) to some containers, such as the metrics database, Prometheus.
+
+A helpful guide on how to do this can be found here: [DoTheEvo/selfhosted-apps-docker](https://github.com/DoTheEvo/selfhosted-apps-docker/tree/master/caddy_v2#basic-authentication)
+
+## 📄 License
+MIT © [Ben Dixon](https://github.com/nurodev/jarvis/blob/master/LICENSE)
