@@ -12,9 +12,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Install
-      run: |
-        chmod +x ./install.sh
-        ./install.sh
     - name: Deploy
       run: docker-compose up -d
+    - name: Check
+      run: docker ps -a
+    - name: Logs
+      run: docker-compose logs
