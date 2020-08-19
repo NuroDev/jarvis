@@ -1,6 +1,12 @@
 <div align="center">
     <img src="./.github/assets/logo.png" />
+
+  [![License](https://img.shields.io/badge/-mit-blue.svg?longCache=true&style=for-the-badge)](https://github.com/nurodev/jarvis/blob/master/LICENSE)
+  [![Build](https://img.shields.io/github/workflow/status/nurodev/jarvis/%F0%9F%9A%80%20Deploy?label=%20&logo=github&logoColor=white&style=for-the-badge)](https://github.com/NuroDev/jarvis/actions?query=workflow%3A%22%F0%9F%9A%80+Deploy%22) 
+  [![Gitmoji](https://img.shields.io/badge/-%20%F0%9F%98%9C-FFDD67.svg?longCache=true&style=for-the-badge)](https://gitmoji.carloscuesta.me/) 
+
 </div>
+
 
 ## 📋 Requirements
 These are the required libraries/packages to run this stack:
