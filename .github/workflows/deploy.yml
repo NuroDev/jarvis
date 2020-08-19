@@ -1,10 +1,6 @@
-name: Install
+name: 🚀 Deploy
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   install:
@@ -12,6 +8,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: .env
+      run: cp example.env .env
     - name: Deploy
       run: docker-compose up -d
     - name: Check
