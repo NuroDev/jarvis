@@ -54,5 +54,13 @@ The largest of such changes that are recommended are to remove or add [basicauth
 
 A helpful guide on how to do this can be found here: [DoTheEvo/selfhosted-apps-docker](https://github.com/DoTheEvo/selfhosted-apps-docker/tree/master/caddy_v2#basic-authentication)
 
+## 📋 TODO
+
+- [ ] Add GitHub Actions CI for testing.
+- [ ] Fix Homer service URL's so they're based on the `DOMAIN` environment vairable.
+- [ ] Add `basicauth` to some metric endpoints via the [Caddy Module](https://caddyserver.com/docs/caddyfile/directives/basicauth).
+- [ ] Add Caddy prometheus metrics using [Caddy module](https://github.com/hairyhenderson/caddyprom) (Requires custom Caddy image build).
+- [ ] Provide custom pre-made Grafana dashboard.
+
 ## 📄 License
 MIT © [Ben Dixon](https://github.com/nurodev/jarvis/blob/master/LICENSE)
