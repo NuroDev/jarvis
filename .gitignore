@@ -1,2 +1,11 @@
+# Files
 .DS_store
 .env
+
+# Directories
+config/
+data/
+
+# Include config files
+!config/homer/config.yml
+!config/prometheus/config.yml
