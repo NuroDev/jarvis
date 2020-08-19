@@ -62,7 +62,7 @@ A helpful guide on how to do this can be found here: [DoTheEvo/selfhosted-apps-d
 
 ## 📋 TODO
 
-- [ ] Add GitHub Actions CI for testing.
+- [x] Add GitHub Actions CI for testing.
 - [ ] Fix Homer service URL's so they're based on the `DOMAIN` environment vairable.
 - [ ] Add `basicauth` to some metric endpoints via the [Caddy Module](https://caddyserver.com/docs/caddyfile/directives/basicauth).
 - [ ] Add Caddy prometheus metrics using [Caddy module](https://github.com/hairyhenderson/caddyprom) (Requires custom Caddy image build).
