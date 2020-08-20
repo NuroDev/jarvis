@@ -60,6 +60,3 @@ For the most part, once the stack has been setup and deployed there are 2 key co
 - [ ] Add Caddy prometheus metrics using [Caddy module](https://github.com/hairyhenderson/caddyprom) (Requires custom Caddy image build).
 - [ ] Provide custom pre-made Grafana dashboard.
 - [ ] Add [Varken](https://github.com/Boerderij/Varken) data aggregator container.
-
-## 📄 License
-MIT © [Ben Dixon](https://github.com/nurodev/jarvis/blob/master/LICENSE)
