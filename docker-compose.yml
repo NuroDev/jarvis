@@ -70,6 +70,21 @@ services:
     volumes:
       - $CONFIG_DIR/homer/:/www/assets
 
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: always
+    hostname: influxdb
+    networks:
+      - jarvis
+    ports:
+      - 8083:8083
+      - 8086:8086
+    environment:
+      - INFLUXDB_DB=jarvis
+    volumes:
+      - $CONFIG_DIR/influxdb:/var/lib/influxdb
+
   node_exporter:
     image: prom/node-exporter:latest
     container_name: node_exporter
@@ -169,6 +184,34 @@ services:
     volumes:
       - $CONFIG_DIR/tautulli:/config
       - $CONFIG_DIR/plex/Library/Application Support/Plex Media Server/Logs/:/logs
+
+  varken:
+    image: boerderij/varken:latest
+    container_name: varken
+    restart: unless-stopped
+    hostname: varken
+    networks:
+      - jarvis
+    depends_on:
+      - influxdb
+      - ombi
+      - tautulli
+    environment:
+      - TZ=Europe/London
+      - VRKN_GLOBAL_LIDARR_SERVER_IDS=false
+      - VRKN_GLOBAL_MAXMIND_LICENSE_KEY=$MAXMIND_LICENSE_KEY
+      - VRKN_GLOBAL_OMBI_SERVER_IDS=1
+      - VRKN_GLOBAL_RADARR_SERVER_IDS=false
+      - VRKN_GLOBAL_SICKCHILL_SERVER_IDS=false
+      - VRKN_GLOBAL_SONARR_SERVER_IDS=false
+      - VRKN_GLOBAL_TAUTULLI_SERVER_IDS=1
+      - VRKN_GLOBAL_UNIFI_SERVER_IDS=false
+      - VRKN_INFLUXDB_PORT=8086
+      - VRKN_INFLUXDB_URL=influxdb
+      - VRKN_OMBI_1_URL=request.$DOMAIN
+      - VRKN_TAUTULLI_1_URL=tautulli.$DOMAIN
+    volumes:
+      - $CONFIG_DIR/varken:/config
 
   watchtower:
     image: containrrr/watchtower:latest

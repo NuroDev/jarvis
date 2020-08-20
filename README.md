@@ -59,7 +59,7 @@ For the most part, once the stack has been setup and deployed there are 2 key co
 - [ ] Add `basicauth` to some metric endpoints via the [Caddy Module](https://caddyserver.com/docs/caddyfile/directives/basicauth).
 - [ ] Add Caddy prometheus metrics using [Caddy module](https://github.com/hairyhenderson/caddyprom) (Requires custom Caddy image build).
 - [ ] Provide custom pre-made Grafana dashboard.
-- [ ] Add [Varken](https://github.com/Boerderij/Varken) data aggregator container.
+- [x] Add [Varken](https://github.com/Boerderij/Varken) data aggregator container.
 
 ## 📄 License
 MIT © [Ben Dixon](https://github.com/nurodev/jarvis/blob/master/LICENSE)
