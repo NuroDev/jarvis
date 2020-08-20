@@ -52,14 +52,6 @@ For the most part, once the stack has been setup and deployed there are 2 key co
 | Prometheus        | Metrics Database           | `prometheus.ip_address`          |
 | Tautulli          | Plex Metrics               | `tautulli.ip_address`            |
 
-## ⚠️ Disclaimer
-This stack is designed for self-hosted use and not for any sort of enterprise environment.
-
-However, if you do wish to modify your own installation to make it usable in such an environment then feel free to do so.
-The largest of such changes that are recommended are to remove or add [basicauth](https://caddyserver.com/docs/caddyfile/directives/basicauth) to some containers, such as the metrics database, Prometheus.
-
-A helpful guide on how to do this can be found here: [DoTheEvo/selfhosted-apps-docker](https://github.com/DoTheEvo/selfhosted-apps-docker/tree/master/caddy_v2#basic-authentication)
-
 ## 📋 TODO
 
 - [x] Add GitHub Actions CI for testing.
