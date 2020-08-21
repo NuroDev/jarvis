@@ -34,6 +34,7 @@ echo "
 ╚═════════════════════════════════════════════════════════════╝"
 git clone https://github.com/nurodev/jarvis.git
 cd ./jarvis/
+git checkout jellyfin
 
 echo "
 ╔═════════════════════════════════════════════════════════════╗
