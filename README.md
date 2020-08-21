@@ -8,14 +8,14 @@
 
 Jarvis is a simple and easy to setup media stack that can be deployed on any unix based system that has Docker installed within a few minutes and offer a near feature complete self-hosted media system:
 
-- Cadvisor - Docker metrics
-- Grafana - Monitoring Dashboard
-- Homer - Home dashboard
-- Node Exporter - System metrics
-- Ombi - Content requesting
-- Plex - Content streaming
-- Prometheus - Metrics Database
-- Tautulli - Plex Metrics
+- [Cadvisor](https://github.com/google/cadvisor) - Docker metrics
+- [Grafana](https://grafana.com/) - Monitoring Dashboard
+- [Homer](https://github.com/bastienwirtz/homer) - Home dashboard
+- [Node Exporter](https://github.com/prometheus/node_exporter) - System metrics
+- [Ombi](https://ombi.io/) - Content requesting
+- [Plex](https://www.plex.tv/) - Content streaming
+- [Prometheus](https://prometheus.io/) - Metrics Database
+- [Tautulli](https://tautulli.com/) - Plex Metrics
 
 ## 📋 Requirements
 These are the required libraries/packages to run this stack:
