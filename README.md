@@ -15,7 +15,7 @@ These are the required libraries/packages to run this stack:
 
 ## 🚀 Usage
 ```shell
-curl -L jarvis.nuro.dev | sh
+curl -L jarvis.nuro.dev/jellyfin | sh
 ```
 
 ## 🔧 Configure
