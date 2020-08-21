@@ -21,7 +21,6 @@ curl -L jarvis.nuro.dev | sh
 ## 🔧 Configure
 For the most part, once the stack has been setup and deployed there are 2 key configuration steps that needs to be done.
 
-
 <details>
   <summary>🏡 Homer</summary>
   
@@ -45,12 +44,11 @@ For the most part, once the stack has been setup and deployed there are 2 key co
 | ------------------|:--------------------------:|:--------------------------------:|
 | Cadvisor	        | Docker Metrics             | `cadvisor.ip_address`            |
 | Grafana	          | Monitoring Dashboard       | `monitoring.ip_address`          |
+| Jellyfin          | Content Streaming          | `watch.ip_address`               |
 | Homer 	          | Home Dashboard             | `ip_address`                     |
 | Node Exporter     | System Metrics             | `node_exporter.ip_address`       |
 | Ombi		          | Content Requesting         | `request.ip_address`             |
-| Plex              | Content Streaming          | `watch.ip_address`               |
 | Prometheus        | Metrics Database           | `prometheus.ip_address`          |
-| Tautulli          | Plex Metrics               | `tautulli.ip_address`            |
 
 ## 📋 TODO
 
@@ -59,4 +57,3 @@ For the most part, once the stack has been setup and deployed there are 2 key co
 - [ ] Add `basicauth` to some metric endpoints via the [Caddy Module](https://caddyserver.com/docs/caddyfile/directives/basicauth).
 - [ ] Add Caddy prometheus metrics using [Caddy module](https://github.com/hairyhenderson/caddyprom) (Requires custom Caddy image build).
 - [ ] Provide custom pre-made Grafana dashboard.
-- [ ] Add [Varken](https://github.com/Boerderij/Varken) data aggregator container.
