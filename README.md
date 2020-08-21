@@ -15,7 +15,7 @@ These are the required libraries/packages to run this stack:
 
 ## 🚀 Usage
 ```shell
-curl -L jarvis.nuro.dev | sh
+curl -sSL https://jarvis.nuro.dev | sh
 ```
 
 ## 🔧 Configure
@@ -51,6 +51,18 @@ For the most part, once the stack has been setup and deployed there are 2 key co
 | Plex              | Content Streaming          | `watch.ip_address`               |
 | Prometheus        | Metrics Database           | `prometheus.ip_address`          |
 | Tautulli          | Plex Metrics               | `tautulli.ip_address`            |
+
+## ✅ Optional
+
+There are some work-in-progress optional branches that trade some services for alternatives.
+
+The most recent of such branches has been the [`jellyfin`](https://github.com/NuroDev/jarvis/tree/jellyfin) branch which replaces the `plex` and `tautulli` services with [Jellyfin](https://jellyfin.org/) which is a completely self-hosted media server, compared to Plex which still requires on services hosted by Plex themselves.
+
+To get started using the [`jellyfin`](https://github.com/NuroDev/jarvis/tree/jellyfin) branch, use the following command in place of the one above:
+```shell
+curl -sSL https://jarvis.nuro.dev/jellyfin | sh
+```
+Or check the [`jellyfin`](https://github.com/NuroDev/jarvis/tree/jellyfin) branch for more details.
 
 ## 📋 TODO
 
