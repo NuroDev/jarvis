@@ -70,6 +70,21 @@ services:
     volumes:
       - $CONFIG_DIR/homer/:/www/assets
 
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    user: 1000:1000
+    hostname: jellyfin
+    networks:
+      - jarvis
+    ports:
+      - 8096:8096
+    volumes:
+      - $CONFIG_DIR/jellyfin:/config
+      - $DATA_DIR/cache:/cache
+      - $DATA_DIR/media:/media
+
   node_exporter:
     image: prom/node-exporter:latest
     container_name: node_exporter
@@ -98,37 +113,10 @@ services:
       - jarvis
     ports:
       - 3579:3579
-    depends_on:
-      - plex
     environment:
       - TZ=Europe/London
     volumes:
       - $CONFIG_DIR/ombi:/config
-
-  plex:
-    image: plexinc/pms-docker:latest
-    container_name: plex
-    restart: always
-    hostname: plex
-    networks:
-      - jarvis
-    ports:
-      - 1900:1900/udp
-      - 3005:3005/tcp
-      - 32400:32400/tcp
-      - 32410:32410/udp
-      - 32412:32412/udp
-      - 32413:32413/udp
-      - 32414:32414/udp
-      - 32469:32469/tcp
-      - 8324:8324/tcp
-    environment:
-      - ADVERTISE_IP="http://$DOMAIN:32400"
-      - VERSION=latest
-    volumes:
-      - $CONFIG_DIR/plex:/config
-      - $DATA_DIR/media:/data
-      - $DATA_DIR/transcode:/transcode
 
   prometheus:
     image: prom/prometheus:latest
@@ -152,23 +140,6 @@ services:
     volumes:
       - $CONFIG_DIR/prometheus/config.yml:/etc/prometheus/prometheus.yml
       - $CONFIG_DIR/prometheus/:/prometheus
-
-  tautulli:
-    image: linuxserver/tautulli:latest
-    container_name: tautulli
-    restart: always
-    hostname: tautulli
-    networks:
-        - jarvis
-    ports:
-      - 8181:8181
-    depends_on:
-      - plex
-    environment:
-      - TZ=Europe/London
-    volumes:
-      - $CONFIG_DIR/tautulli:/config
-      - $CONFIG_DIR/plex/Library/Application Support/Plex Media Server/Logs/:/logs
 
   watchtower:
     image: containrrr/watchtower:latest

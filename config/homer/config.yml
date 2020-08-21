@@ -23,7 +23,7 @@
     - name: "Application"
       icon: "fa fa-cloud"
       items:
-        - name: "Plex"
+        - name: "Jellyfin"
           subtitle: "Watch content"
           icon: "fa fa-play-circle"
           url: "https://watch.localhost/"
