@@ -4,9 +4,18 @@
   [![License](https://img.shields.io/badge/-mit-blue.svg?longCache=true&style=for-the-badge)](https://github.com/nurodev/jarvis/blob/master/LICENSE)
   [![Build](https://img.shields.io/github/workflow/status/nurodev/jarvis/%F0%9F%9A%80%20Deploy?label=%20&logo=github&logoColor=white&style=for-the-badge)](https://github.com/NuroDev/jarvis/actions?query=workflow%3A%22%F0%9F%9A%80+Deploy%22) 
   [![Gitmoji](https://img.shields.io/badge/-%20%F0%9F%98%9C-FFDD67.svg?longCache=true&style=for-the-badge)](https://gitmoji.carloscuesta.me/) 
-
 </div>
 
+Jarvis is a simple and easy to setup media stack that can be deployed on any unix based system that has Docker installed within a few minutes and offer a near feature complete self-hosted media system:
+
+- Cadvisor - Docker metrics
+- Grafana - Monitoring Dashboard
+- Homer - Home dashboard
+- Node Exporter - System metrics
+- Ombi - Content requesting
+- Plex - Content streaming
+- Prometheus - Metrics Database
+- Tautulli - Plex Metrics
 
 ## 📋 Requirements
 These are the required libraries/packages to run this stack:
