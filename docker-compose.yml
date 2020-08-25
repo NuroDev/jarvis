@@ -108,7 +108,7 @@ services:
   plex:
     image: plexinc/pms-docker:latest
     container_name: plex
-    restart: always
+    restart: unless-stopped
     hostname: plex
     networks:
       - jarvis
@@ -156,7 +156,7 @@ services:
   tautulli:
     image: linuxserver/tautulli:latest
     container_name: tautulli
-    restart: always
+    restart: unless-stopped
     hostname: tautulli
     networks:
         - jarvis
