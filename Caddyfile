@@ -20,7 +20,7 @@ node_exporter.{$DOMAIN} {
 }
 
 request.{$DOMAIN} {
-    reverse_proxy ombi:3579
+    reverse_proxy overseerr:5055
 }
 
 tautulli.{$DOMAIN} {
