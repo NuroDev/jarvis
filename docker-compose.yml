@@ -89,21 +89,22 @@ services:
       - /sys:/host/sys:ro
       - /:/rootfs:ro
 
-  ombi:
-    image: linuxserver/ombi:latest
-    container_name: ombi
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
     restart: unless-stopped
-    hostname: ombi
+    hostname: overseerr
     networks:
       - jarvis
     ports:
-      - 3579:3579
+      - 5055:5055
     depends_on:
       - plex
     environment:
       - TZ=Europe/London
+      - LOG_LEVEL=info
     volumes:
-      - $CONFIG_DIR/ombi:/config
+      - $CONFIG_DIR/overseerr:/app/config/
 
   plex:
     image: plexinc/pms-docker:latest
