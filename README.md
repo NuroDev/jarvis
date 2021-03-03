@@ -12,7 +12,7 @@ Jarvis is a simple and easy to setup media stack that can be deployed on any uni
 - [Grafana](https://grafana.com/) - Monitoring Dashboard
 - [Homer](https://github.com/bastienwirtz/homer) - Home dashboard
 - [Node Exporter](https://github.com/prometheus/node_exporter) - System metrics
-- [Ombi](https://ombi.io/) - Content requesting
+- [Overseerr](https://overseerr.dev) - Content requesting
 - [Plex](https://www.plex.tv/) - Content streaming
 - [Prometheus](https://prometheus.io/) - Metrics Database
 - [Tautulli](https://tautulli.com/) - Plex Metrics
@@ -56,7 +56,7 @@ For the most part, once the stack has been setup and deployed there are 2 key co
 | Grafana	          | Monitoring Dashboard       | `monitoring.ip_address`          |
 | Homer 	          | Home Dashboard             | `ip_address`                     |
 | Node Exporter     | System Metrics             | `node_exporter.ip_address`       |
-| Ombi		          | Content Requesting         | `request.ip_address`             |
+| Overseerr		      | Content Requesting         | `request.ip_address`             |
 | Plex              | Content Streaming          | `watch.ip_address`               |
 | Prometheus        | Metrics Database           | `prometheus.ip_address`          |
 | Tautulli          | Plex Metrics               | `tautulli.ip_address`            |
